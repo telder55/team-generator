@@ -1,3 +1,4 @@
+
 const generateCards = allEmployees => {
     generateManager = manager => {
         return `<div class="card col-sm-3" style="width: 18rem;">

@@ -55,21 +55,12 @@ const initialQuestions = () =>
             team.push(manager)
             console.log(team);
             addNewEmployee();
-            // Call add employee function (This needs to be created and will call another create team member function afterwards)
-
-
-            // //Run Generate Markdown function and pass response data in
-            // let testData = generatePage(resData)
-
-            // //Calling writeToFile
-            // writeToFile(testData)
         }
 
         )
     ;
 
 initialQuestions();
-
 
 // Function to ask user if they want to create a new employee or not
 function addNewEmployee() {
@@ -227,7 +218,6 @@ function writeToFile(data) {
         console.log('team.html has been generated :)');
     });
 }
-
 
 // Generate HTML File
 function generatePage(data) {
