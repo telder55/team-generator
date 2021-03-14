@@ -10,10 +10,9 @@ const Intern = require("./lib/intern")
 
 const newCards = require("./src/template")
 
-// Direct which folder to go to when creating a new one
-const fileOut = path.resolve(__dirname, "dist");
-const outPath = path.join(fileOut, "company.html")
+let companyName;
 
+let newCardsData;
 const team = [];
 
 const initialQuestions = () =>
@@ -51,7 +50,7 @@ const initialQuestions = () =>
 
             const manager = new Manager(data.manager, data.managerID, data.managerEmail, data.managerPhone)
             // pushing manager details into team array
-            team.push(data.companyName)
+            companyName = data.companyName
             team.push(manager)
             console.log(team);
             addNewEmployee();
@@ -80,7 +79,10 @@ function addNewEmployee() {
                 addNewEngineer();
             } else if (data.addEmployee === 'Intern') {
                 addNewIntern();
-            } else console.log("All done adding folks");
+            } else if (data.addEmployee === 'No') {
+            newCardsData = newCards(team).join("");
+            generatePage(newCardsData);
+            } else return;
         })
 }
 
@@ -211,50 +213,50 @@ const addNewIntern = () =>
     ;
 
 
+
+
 // Writing HTML File 
 function writeToFile(data) {
-    fs.writeFile('team.html', data, function (err) {
+    // Direct which folder to go to when creating a new one
+    const fileOut = path.resolve(__dirname, "dist");
+    const outPath = path.join(fileOut, companyName + '.html')
+    fs.writeFile(outPath, data, function (err) {
         if (err) throw err;
-        console.log('team.html has been generated :)');
+        console.log(companyName + '.html has been generated');
     });
 }
+
+
+
 
 // Generate HTML File
 function generatePage(data) {
     // Create variables based on license info to pass into template literal 
 
-    return `<!DOCTYPE html>
+    writeToFile(`<!DOCTYPE html>
     <html lang="en">
     
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Team ${data.companyName}</title>
-        <link rel="stylesheet" href="./assets/css/style.css">
+        <title>Team</title>
+        <link rel="stylesheet" href="../assets/css/style.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
             integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     </head>
     
     <body class="container">
-        <h1>Team ${data.companyName}</h1>
+        <h1>Team</h1>
         <div class="row">
-            
-            <div class="card col-sm-3" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">TJ Elder</h5>
-                    <h5 class="card-title">Manager</h5>
-                    <p class="card-text">ID: 532</p>
-                    <p class="card-text">Email: <a href="mailto:telder55@gmail.com">telder55@gmail.com</a></p>
-                    <p class="card-text">Office: 3</p>
-                </div>
-            </div>
+            ${data}
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
             crossorigin="anonymous"></script>
     </body>
     
-    </html>`;
+    </html>`);
+    
 }
 
